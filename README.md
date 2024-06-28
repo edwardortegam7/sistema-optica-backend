@@ -1,21 +1,40 @@
-Usar IntelliJ Idea
-Para probar en el Postman:
+# README
 
-POST:
-http://localhost:8080/generate-token
-Se copia esto en el body
-{
-    "username": "edward@gmail.com",
-    "password": "12345"
-}
-Se envia y se genera un token
+## Uso de IntelliJ IDEA y Postman para probar la API
 
+Este documento proporciona instrucciones paso a paso sobre cómo probar la API utilizando IntelliJ IDEA y Postman.
+
+### Requisitos previos
+
+- IntelliJ IDEA instalado
+- Postman instalado
+- API en funcionamiento en `http://localhost:8080`
+
+### Instrucciones
+
+#### Generar un Token
+
+Para generar un token, sigue los siguientes pasos:
+
+1. Abre Postman.
+2. Configura una nueva petición POST:
+   - URL: `http://localhost:8080/generate-token`
+   - Body: Selecciona `raw` y `JSON` e introduce el siguiente contenido:
+
+   ```json
+   {
+       "username": "edward@gmail.com",
+       "password": "12345"
+   }
+3. Se obtiene un token
 
 GET:
-http://localhost:8080/usuarios/edward@gmail.com
-Se copia el token en "Auth" y se selecciona "Bearer Token"
-Y regresa lo siguiente:
-{
+1. Configura una nueva petición GET:
+   - URL: `http://localhost:8080/usuarios/edward@gmail.com`
+   - Auth: Selecciona `Bearer Token` e introduce el token
+2. Regresa lo siguiente:
+   ```json
+   {
     "id": 1,
     "username": "edward@gmail.com",
     "password": "$2a$10$ekFZGbSNmyDhv4e9u8wn9.xch2pKCwQG6X8WxyA8M/nfcu6wjzr9G",
@@ -32,14 +51,15 @@ Y regresa lo siguiente:
         }
     ],
     "accountNonLocked": true
-}
-
+    }
 
 GET:
-http://localhost:8080/actual-usuario
-Se copia el token en "Auth" y se selecciona "Bearer Token"
-Y regresa lo siguiente:
-{
+1. Configura una nueva petición GET:
+   - URL: `http://localhost:8080/actual-usuario`
+   - Auth: Selecciona `Bearer Token` e introduce el token
+2. Regresa lo siguiente:
+   ```json
+   {
     "id": 1,
     "username": "edward@gmail.com",
     "password": "$2a$10$ekFZGbSNmyDhv4e9u8wn9.xch2pKCwQG6X8WxyA8M/nfcu6wjzr9G",
@@ -56,4 +76,4 @@ Y regresa lo siguiente:
         }
     ],
     "accountNonLocked": true
-}
+    }
