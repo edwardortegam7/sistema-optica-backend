@@ -66,6 +66,11 @@ public class UsuarioController {
         usuarioService.eliminarUsuario(usuarioId);
     }
 
+    @GetMapping("/employees")
+    public Set<Usuario> obtenerUsuariosExceptoAdminYCliente() {
+        return usuarioService.obtenerUsuariosExceptoAdminYCliente();
+    }
+
     private String capitalize(String str) {
         if (str == null || str.isEmpty()) {
             return str;

@@ -61,4 +61,9 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuarioRepository.deleteById(usuarioId);
     }
 
+    @Override
+    public Set<Usuario> obtenerUsuariosExceptoAdminYCliente() {
+        return usuarioRepository.findAllExceptAdminAndClient();
+    }
+
 }
