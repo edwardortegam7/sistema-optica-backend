@@ -9,8 +9,10 @@ import java.util.Set;
 public class Rol {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long rolId;
-    private String Nombre;
+    @Column(name = "nombre", nullable = false)
+    private String nombre;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "rol")
     private Set<UsuarioRol> usuarioRoles = new HashSet<>();
@@ -24,11 +26,11 @@ public class Rol {
     }
 
     public String getNombre() {
-        return Nombre;
+        return nombre;
     }
 
     public void setNombre(String nombre) {
-        Nombre = nombre;
+        this.nombre = nombre;
     }
 
     public Set<UsuarioRol> getUsuarioRoles() {

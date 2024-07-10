@@ -41,7 +41,6 @@ public class SistemaOpticaBackendApplication implements CommandLineRunner {
 			usuario.setPerfil("foto.png");
 
 			Rol rol = new Rol();
-			rol.setRolId(1L);
 			rol.setNombre("ADMINISTRADOR");
 
 			Set<UsuarioRol> usuarioRoles = new HashSet<>();

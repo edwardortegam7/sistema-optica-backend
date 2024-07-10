@@ -1,5 +1,6 @@
 package com.sistema.optica.servicios.Impl;
 
+import com.sistema.optica.entidades.Rol;
 import com.sistema.optica.entidades.Usuario;
 import com.sistema.optica.entidades.UsuarioRol;
 import com.sistema.optica.excepciones.UsuarioFoundException;
@@ -24,17 +25,29 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public Usuario guardarUsuario(Usuario usuario, Set<UsuarioRol> usuarioRoles) throws Exception {
         Usuario usuarioLocal = usuarioRepository.findByUsername(usuario.getUsername());
-        if(usuarioLocal!=null){
-            System.out.println("El usuario ya existe");
-            throw new UsuarioFoundException("El usuario ya esta presente");
-        }
-        else{
-            for(UsuarioRol usuarioRol:usuarioRoles){
-                rolRepository.save(usuarioRol.getRol());
+        if (usuarioLocal != null) {
+            throw new Exception("El usuario ya está presente");
+        } else {
+            for (UsuarioRol usuarioRol : usuarioRoles) {
+                Rol rol = usuarioRol.getRol();
+                // Verifica si el rol ya existe en la base de datos
+                Rol rolExistente = rolRepository.findByNombre(rol.getNombre());
+                if (rolExistente == null) {
+                    if (rol.getNombre() == null || rol.getNombre().isEmpty()) {
+                        throw new Exception("El nombre del rol no puede ser nulo o vacío");
+                    }
+                    // Guarda el nuevo rol
+                    rol = rolRepository.save(rol);
+                } else {
+                    rol = rolExistente;
+                }
+                usuarioRol.setRol(rol);
             }
+
             usuario.getUsuarioRoles().addAll(usuarioRoles);
             usuarioLocal = usuarioRepository.save(usuario);
         }
+
         return usuarioLocal;
     }
 
