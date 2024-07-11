@@ -1,14 +1,11 @@
 package com.sistema.optica.controladores;
 
 import com.sistema.optica.entidades.Cliente;
+import com.sistema.optica.repositorios.ClienteRepository;
 import com.sistema.optica.servicios.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -17,6 +14,9 @@ public class ClienteController {
 
     @Autowired
     private ClienteService clienteService;
+
+    @Autowired
+    private ClienteRepository clienteRepository;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -45,5 +45,11 @@ public class ClienteController {
             capitalizedWords.append(" ");
         }
         return capitalizedWords.toString().trim();
+    }
+
+    @GetMapping("/es-cliente/{username}")
+    public boolean esCliente(@PathVariable String username) {
+        Cliente cliente = clienteRepository.findByUsername(username);
+        return cliente != null;
     }
 }

@@ -14,7 +14,7 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public Cliente guardarCliente(Cliente cliente) throws Exception {
-        Cliente clienteLocal = clienteRepository.findByDni(cliente.getDni());
+        Cliente clienteLocal = clienteRepository.findByUsername(cliente.getUsername());
 
         if (clienteLocal != null) {
             throw new Exception("El cliente ya está registrado");
@@ -25,7 +25,7 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public Cliente obtenerCliente(String dni) {
-        return clienteRepository.findByDni(dni);
+    public Cliente obtenerCliente(String username) {
+        return clienteRepository.findByUsername(username);
     }
 }
