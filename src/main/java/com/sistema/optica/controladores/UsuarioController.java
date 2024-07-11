@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @RestController
@@ -41,10 +42,10 @@ public class UsuarioController {
         Set<UsuarioRol> usuarioRoles = new HashSet<>();
 
         // Buscar o crear el rol "cliente"
-        Rol rol = rolService.obtenerRol("ADMINISTRATIVO");
+        Rol rol = rolService.obtenerRol("CLIENTE");
         if (rol == null) {
             rol = new Rol();
-            rol.setNombre("ADMINISTRATIVO");
+            rol.setNombre("CLIENTE");
             rol = rolService.guardarRol(rol);
         }
 
@@ -66,9 +67,20 @@ public class UsuarioController {
         usuarioService.eliminarUsuario(usuarioId);
     }
 
-    @GetMapping("/employees")
-    public Set<Usuario> obtenerUsuariosExceptoAdminYCliente() {
-        return usuarioService.obtenerUsuariosExceptoAdminYCliente();
+    @GetMapping("/get-employees")
+    public Set<Map<String, Object>> obtenerUsuariosExceptoAdminYCliente() {
+        Set<Usuario> usuarios = usuarioService.obtenerUsuariosExceptoAdminYCliente();
+        Set<Map<String, Object>> empleados = new HashSet<>();
+        for (Usuario usuario : usuarios) {
+            Map<String, Object> empleado = new HashMap<>();
+            empleado.put("dni", usuario.getDni());
+            empleado.put("name", usuario.getNombres());
+            empleado.put("lastname", usuario.getApellidos());
+            empleado.put("phone", usuario.getTelefono());
+            empleado.put("rol", usuario.getAuthorities().stream().findFirst().get().getAuthority());
+            empleados.add(empleado);
+        }
+        return empleados;
     }
 
     private String capitalize(String str) {
