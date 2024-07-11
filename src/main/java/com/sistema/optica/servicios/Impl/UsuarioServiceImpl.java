@@ -3,7 +3,6 @@ package com.sistema.optica.servicios.Impl;
 import com.sistema.optica.entidades.Rol;
 import com.sistema.optica.entidades.Usuario;
 import com.sistema.optica.entidades.UsuarioRol;
-import com.sistema.optica.excepciones.UsuarioFoundException;
 import com.sistema.optica.repositorios.RolRepository;
 import com.sistema.optica.repositorios.UsuarioRepository;
 import com.sistema.optica.servicios.UsuarioService;

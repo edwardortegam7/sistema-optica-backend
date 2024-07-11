@@ -31,7 +31,7 @@ public class SistemaOpticaBackendApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		/*try {
+		try {
 			Usuario usuario = new Usuario();
 			usuario.setNombres("Edward");
 			usuario.setApellidos("Ortega");
@@ -53,6 +53,6 @@ public class SistemaOpticaBackendApplication implements CommandLineRunner {
 			System.out.println(usuarioGuardado.getUsername());
 		} catch (UsuarioFoundException exception){
 			exception.printStackTrace();
-		}*/
+		}
 	}
 }
