@@ -9,7 +9,7 @@ public class JwtRequest {
 
     }
 
-    public JwtRequest(String username, String password) {
+    public JwtRequest(String username, String password, boolean isCliente) {
         this.username = username;
         this.password = password;
     }

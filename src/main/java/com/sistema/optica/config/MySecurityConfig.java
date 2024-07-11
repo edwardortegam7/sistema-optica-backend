@@ -1,4 +1,5 @@
 package com.sistema.optica.config;
+import com.sistema.optica.servicios.Impl.ClienteDetailsServiceImpl;
 import com.sistema.optica.servicios.Impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -26,6 +27,9 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsServiceImpl userDetailsServiceImpl;
 
     @Autowired
+    private ClienteDetailsServiceImpl clienteDetailsServiceImpl;
+
+    @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Override
@@ -35,13 +39,14 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder(){
+    public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(this.userDetailsServiceImpl).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(this.clienteDetailsServiceImpl).passwordEncoder(passwordEncoder());
     }
 
     @Override
@@ -52,7 +57,7 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/generate-token","/usuarios/","/clientes/").permitAll()
+                .antMatchers("/generate-token", "/usuarios/", "/clientes/").permitAll()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .anyRequest().authenticated()
                 .and()
