@@ -1,9 +1,13 @@
 package com.sistema.optica.controladores;
 
+import com.sistema.optica.entidades.Cita;
 import com.sistema.optica.entidades.Cliente;
 import com.sistema.optica.repositorios.ClienteRepository;
+import com.sistema.optica.servicios.CitaService;
 import com.sistema.optica.servicios.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +20,7 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @Autowired
-    private ClienteRepository clienteRepository;
+    private CitaService citaService;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -47,9 +51,19 @@ public class ClienteController {
         return capitalizedWords.toString().trim();
     }
 
+    @PostMapping(value="/guardar-cita/{clienteId}", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<Cita> guardarCita(@RequestBody Cita cita, @PathVariable Long clienteId) throws Exception {
+        try {
+            Cita nuevaCita = citaService.guardarCita(cita, clienteId);
+            return ResponseEntity.ok(nuevaCita);
+        } catch (Exception e) {
+            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
     @GetMapping("/es-cliente/{username}")
     public boolean esCliente(@PathVariable String username) {
-        Cliente cliente = clienteRepository.findByUsername(username);
+        Cliente cliente = clienteService.obtenerCliente(username);
         return cliente != null;
     }
 }

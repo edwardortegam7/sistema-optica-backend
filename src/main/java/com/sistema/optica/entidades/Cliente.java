@@ -1,16 +1,21 @@
 package com.sistema.optica.entidades;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "Cliente")
@@ -28,6 +33,18 @@ public class Cliente implements UserDetails {
     String genero;
     String dni;
     private boolean enabled = true;
+
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private Set<Cita> cita = new HashSet<>();
+
+    public Set<Cita> getCita() {
+        return cita;
+    }
+
+    public void setCita(Set<Cita> cita) {
+        this.cita = cita;
+    }
 
     public Cliente() {
     }

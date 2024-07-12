@@ -5,6 +5,7 @@ import com.sistema.optica.repositorios.ClienteRepository;
 import com.sistema.optica.servicios.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {
@@ -27,5 +28,10 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public Cliente obtenerCliente(String username) {
         return clienteRepository.findByUsername(username);
+    }
+
+    @Override
+    public Cliente obtenerClienteId(Long id) {
+        return clienteRepository.findById(id).orElseThrow(() -> new RuntimeException("Cliente no encontrado")) ;
     }
 }
