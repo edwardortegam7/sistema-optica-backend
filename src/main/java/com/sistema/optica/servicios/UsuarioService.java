@@ -10,4 +10,5 @@ public interface UsuarioService {
     public Usuario obtenerUsuario(String username);
     public void eliminarUsuario(Long usuarioId);
     public Set<Usuario> obtenerUsuariosExceptoAdminYCliente();
+    public Set<Object[]> obtenerSolicitudesCitas();
 }

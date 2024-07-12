@@ -42,10 +42,10 @@ public class UsuarioController {
         Set<UsuarioRol> usuarioRoles = new HashSet<>();
 
         // Buscar o crear el rol "cliente"
-        Rol rol = rolService.obtenerRol("CLIENTE");
+        Rol rol = rolService.obtenerRol("ADMINISTRATIVO");
         if (rol == null) {
             rol = new Rol();
-            rol.setNombre("CLIENTE");
+            rol.setNombre("ADMINISTRATIVO");
             rol = rolService.guardarRol(rol);
         }
 
@@ -81,6 +81,11 @@ public class UsuarioController {
             empleados.add(empleado);
         }
         return empleados;
+    }
+
+    @GetMapping("/lista-solicitudes")
+    public Set<Object[]> obtenerSolicitudes() {
+        return usuarioService.obtenerSolicitudesCitas();
     }
 
     private String capitalize(String str) {
