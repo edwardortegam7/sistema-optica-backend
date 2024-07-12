@@ -42,10 +42,10 @@ public class UsuarioController {
         Set<UsuarioRol> usuarioRoles = new HashSet<>();
 
         // Buscar o crear el rol "cliente"
-        Rol rol = rolService.obtenerRol("CLIENTE");
+        Rol rol = rolService.obtenerRol("ADMINISTRATIVO");
         if (rol == null) {
             rol = new Rol();
-            rol.setNombre("CLIENTE");
+            rol.setNombre("ADMINISTRATIVO");
             rol = rolService.guardarRol(rol);
         }
 
