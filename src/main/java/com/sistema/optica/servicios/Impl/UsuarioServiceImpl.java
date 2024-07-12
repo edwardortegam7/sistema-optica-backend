@@ -65,4 +65,8 @@ public class UsuarioServiceImpl implements UsuarioService {
         return usuarioRepository.findAllExceptAdminAndClient();
     }
 
+    @Override
+    public Set<Object[]> obtenerSolicitudesCitas() {
+        return usuarioRepository.findAllClientAndDate();
+    }
 }

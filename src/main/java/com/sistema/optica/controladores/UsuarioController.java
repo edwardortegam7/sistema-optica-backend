@@ -83,6 +83,11 @@ public class UsuarioController {
         return empleados;
     }
 
+    @GetMapping("/lista-solicitudes")
+    public Set<Object[]> obtenerSolicitudes() {
+        return usuarioService.obtenerSolicitudesCitas();
+    }
+
     private String capitalize(String str) {
         if (str == null || str.isEmpty()) {
             return str;
