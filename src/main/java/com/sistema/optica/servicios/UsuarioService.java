@@ -1,14 +1,13 @@
 package com.sistema.optica.servicios;
 
-import com.sistema.optica.entidades.Usuario;
-import com.sistema.optica.entidades.UsuarioRol;
+import com.sistema.optica.entidades.Employee;
 
 import java.util.Set;
 
 public interface UsuarioService {
-    public Usuario guardarUsuario(Usuario usuario, Set<UsuarioRol> usuarioRoles) throws Exception;
-    public Usuario obtenerUsuario(String username);
+    public Employee guardarUsuario(Employee employee, String nombreRol) throws Exception;
+    public Employee obtenerUsuario(String username);
     public void eliminarUsuario(Long usuarioId);
-    public Set<Usuario> obtenerUsuariosExceptoAdminYCliente();
+    public Set<Employee> obtenerUsuariosExceptoAdmin();
     public Set<Object[]> obtenerSolicitudesCitas();
 }

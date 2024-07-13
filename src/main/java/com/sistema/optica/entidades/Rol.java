@@ -1,5 +1,7 @@
 package com.sistema.optica.entidades;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -10,19 +12,28 @@ public class Rol {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long rolId;
+    private Long id;
     @Column(name = "nombre", nullable = false)
     private String nombre;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "rol")
-    private Set<UsuarioRol> usuarioRoles = new HashSet<>();
+    @OneToMany(mappedBy = "roles", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private Set<Employee> employees = new HashSet<>();
 
-    public Long getRolId() {
-        return rolId;
+    public Set<Employee> getUsuarios() {
+        return employees;
     }
 
-    public void setRolId(Long rolId) {
-        this.rolId = rolId;
+    public void setUsuarios(Set<Employee> employees) {
+        this.employees = employees;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -31,14 +42,6 @@ public class Rol {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public Set<UsuarioRol> getUsuarioRoles() {
-        return usuarioRoles;
-    }
-
-    public void setUsuarioRoles(Set<UsuarioRol> usuarioRoles) {
-        this.usuarioRoles = usuarioRoles;
     }
 
     public Rol(){

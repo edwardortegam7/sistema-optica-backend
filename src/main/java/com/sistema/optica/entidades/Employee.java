@@ -1,14 +1,15 @@
 package com.sistema.optica.entidades;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.*;
 
 @Entity
-@Table(name="usuarios")
-public class Usuario implements UserDetails {
+@Table(name="employee")
+public class Employee implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +27,19 @@ public class Usuario implements UserDetails {
     private Date fecha_nacimiento;
     private boolean enabled = true;
     private String perfil;
+
+    @ManyToOne
+    @JoinColumn(name = "id_rol", referencedColumnName = "id", nullable = false)
+    @JsonBackReference
+    Rol roles;
+
+    public Rol getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Rol roles) {
+        this.roles = roles;
+    }
 
     public String getDni() {
         return dni;
@@ -58,10 +72,6 @@ public class Usuario implements UserDetails {
     public void setFecha_nacimiento(Date fecha_nacimiento) {
         this.fecha_nacimiento = fecha_nacimiento;
     }
-
-    @OneToMany(cascade= CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "usuario")
-    @JsonIgnore
-    private Set<UsuarioRol> usuarioRoles = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -96,11 +106,9 @@ public class Usuario implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<Authority> autoridades = new HashSet<>();
-        this.usuarioRoles.forEach(usuarioRol ->{
-            autoridades.add(new Authority(usuarioRol.getRol().getNombre()));
-        });
-        return autoridades;
+        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+        authorities.add(new SimpleGrantedAuthority(this.roles.getNombre()));
+        return authorities;
     }
 
     public String getPassword() {
@@ -151,15 +159,7 @@ public class Usuario implements UserDetails {
         this.perfil = perfil;
     }
 
-    public Set<UsuarioRol> getUsuarioRoles() {
-        return usuarioRoles;
-    }
-
-    public void setUsuarioRoles(Set<UsuarioRol> usuarioRoles) {
-        this.usuarioRoles = usuarioRoles;
-    }
-
-    public Usuario(){
+    public Employee(){
 
     }
 }

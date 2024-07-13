@@ -30,7 +30,7 @@ Para generar un token, sigue los siguientes pasos:
 
 GET:
 1. Configura una nueva petición GET:
-   - URL: `http://localhost:8080/usuarios/edward@gmail.com`
+   - URL: `http://localhost:8080/employees/edward@gmail.com`
    - Auth: Selecciona `Bearer Token` e introduce el token
 2. Regresa lo siguiente:
    ```json
@@ -55,7 +55,7 @@ GET:
 
 GET:
 1. Configura una nueva petición GET:
-   - URL: `http://localhost:8080/actual-usuario`
+   - URL: `http://localhost:8080/actual-employee`
    - Auth: Selecciona `Bearer Token` e introduce el token
 2. Regresa lo siguiente:
    ```json

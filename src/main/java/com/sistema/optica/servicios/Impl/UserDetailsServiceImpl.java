@@ -1,6 +1,6 @@
 package com.sistema.optica.servicios.Impl;
 
-import com.sistema.optica.entidades.Usuario;
+import com.sistema.optica.entidades.Employee;
 import com.sistema.optica.repositorios.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,10 +16,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Usuario usuario = this.usuarioRepository.findByUsername(username);
-        if(usuario == null){
+        Employee employee = this.usuarioRepository.findByUsername(username);
+        if(employee == null){
             throw new UsernameNotFoundException("Usuario no encontrado");
         }
-        return usuario;
+        return employee;
     }
 }
