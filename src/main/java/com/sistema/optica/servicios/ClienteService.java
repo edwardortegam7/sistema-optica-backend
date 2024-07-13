@@ -3,7 +3,9 @@ package com.sistema.optica.servicios;
 import com.sistema.optica.entidades.Cliente;
 
 public interface ClienteService {
-    public Cliente guardarCliente(Cliente cliente) throws Exception;
-    public Cliente obtenerCliente(String username);
-    public Cliente obtenerClienteId(Long id);
+    Cliente guardarCliente(Cliente cliente) throws Exception;
+
+    Cliente obtenerCliente(String username);
+
+    Cliente obtenerClienteId(Long id);
 }

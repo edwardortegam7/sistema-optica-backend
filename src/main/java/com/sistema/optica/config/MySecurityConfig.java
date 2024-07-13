@@ -1,4 +1,5 @@
 package com.sistema.optica.config;
+
 import com.sistema.optica.servicios.Impl.ClienteDetailsServiceImpl;
 import com.sistema.optica.servicios.Impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;

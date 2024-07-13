@@ -1,4 +1,5 @@
 package com.sistema.optica.entidades;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -8,7 +9,7 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity
-@Table(name="employee")
+@Table(name = "employee")
 public class Employee implements UserDetails {
 
     @Id
@@ -159,7 +160,7 @@ public class Employee implements UserDetails {
         this.perfil = perfil;
     }
 
-    public Employee(){
+    public Employee() {
 
     }
 }

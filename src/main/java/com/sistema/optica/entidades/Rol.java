@@ -44,7 +44,7 @@ public class Rol {
         this.nombre = nombre;
     }
 
-    public Rol(){
+    public Rol() {
 
     }
 }

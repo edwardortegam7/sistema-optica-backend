@@ -32,6 +32,6 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public Cliente obtenerClienteId(Long id) {
-        return clienteRepository.findById(id).orElseThrow(() -> new RuntimeException("Cliente no encontrado")) ;
+        return clienteRepository.findById(id).orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
     }
 }

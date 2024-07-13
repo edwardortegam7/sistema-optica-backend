@@ -51,13 +51,13 @@ public class ClienteController {
         return capitalizedWords.toString().trim();
     }
 
-    @PostMapping(value="/guardar-cita/{clienteId}", consumes = "application/json", produces = "application/json")
+    @PostMapping(value = "/guardar-cita/{clienteId}", consumes = "application/json", produces = "application/json")
     public ResponseEntity<Cita> guardarCita(@RequestBody Cita cita, @PathVariable Long clienteId) throws Exception {
         try {
             Cita nuevaCita = citaService.guardarCita(cita, clienteId);
             return ResponseEntity.ok(nuevaCita);
         } catch (Exception e) {
-            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 

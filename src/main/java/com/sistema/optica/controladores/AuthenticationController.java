@@ -67,12 +67,12 @@ public class AuthenticationController {
     }
 
     private void autenticar(String username, String password) throws Exception {
-        try{
+        try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        }catch(DisabledException disabledException){
-            throw new Exception("USUARIO DESHABILITADO "+ disabledException.getMessage());
-        }catch(BadCredentialsException badCredentialsException){
-            throw new Exception("Credenciales invalidas "+ badCredentialsException.getMessage());
+        } catch (DisabledException disabledException) {
+            throw new Exception("USUARIO DESHABILITADO " + disabledException.getMessage());
+        } catch (BadCredentialsException badCredentialsException) {
+            throw new Exception("Credenciales invalidas " + badCredentialsException.getMessage());
         }
     }
 

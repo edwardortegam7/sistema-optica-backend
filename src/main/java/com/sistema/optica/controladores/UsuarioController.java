@@ -35,12 +35,12 @@ public class UsuarioController {
     }
 
     @GetMapping("/{username}")
-    public Employee obtenerUsuario(@PathVariable("username") String username){
+    public Employee obtenerUsuario(@PathVariable("username") String username) {
         return usuarioService.obtenerUsuario(username);
     }
 
     @DeleteMapping("/{usuarioId}")
-    public void eliminarUsuario(@PathVariable("usuarioId") Long usuarioId){
+    public void eliminarUsuario(@PathVariable("usuarioId") Long usuarioId) {
         usuarioService.eliminarUsuario(usuarioId);
     }
 
