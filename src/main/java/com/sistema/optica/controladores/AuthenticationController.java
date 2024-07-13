@@ -4,7 +4,7 @@ import com.sistema.optica.config.JwtUtils;
 import com.sistema.optica.entidades.Cliente;
 import com.sistema.optica.entidades.JwtRequest;
 import com.sistema.optica.entidades.JwtResponse;
-import com.sistema.optica.entidades.Usuario;
+import com.sistema.optica.entidades.Employee;
 import com.sistema.optica.excepciones.UsuarioNotFoundException;
 import com.sistema.optica.servicios.Impl.ClienteDetailsServiceImpl;
 import com.sistema.optica.servicios.Impl.UserDetailsServiceImpl;
@@ -94,7 +94,7 @@ public class AuthenticationController {
         // Intentar cargar detalles del usuario
         try {
             userDetails = this.userDetailsService.loadUserByUsername(username);
-            return ResponseEntity.ok((Usuario) userDetails);
+            return ResponseEntity.ok((Employee) userDetails);
         } catch (UsernameNotFoundException e) {
             // Si no se encuentra como usuario, intentar cargar detalles del cliente
             try {

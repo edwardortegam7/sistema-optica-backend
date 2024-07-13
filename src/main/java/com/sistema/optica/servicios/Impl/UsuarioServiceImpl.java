@@ -1,12 +1,12 @@
 package com.sistema.optica.servicios.Impl;
 
+import com.sistema.optica.entidades.Employee;
 import com.sistema.optica.entidades.Rol;
-import com.sistema.optica.entidades.Usuario;
-import com.sistema.optica.entidades.UsuarioRol;
 import com.sistema.optica.repositorios.RolRepository;
 import com.sistema.optica.repositorios.UsuarioRepository;
 import com.sistema.optica.servicios.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -20,38 +20,37 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Autowired
     private RolRepository rolRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public Usuario guardarUsuario(Usuario usuario, Set<UsuarioRol> usuarioRoles) throws Exception {
-        Usuario usuarioLocal = usuarioRepository.findByUsername(usuario.getUsername());
-        if (usuarioLocal != null) {
+    public Employee guardarUsuario(Employee employee, String nombreRol) throws Exception {
+        Employee employeeLocal = usuarioRepository.findByUsername(employee.getUsername());
+        if (employeeLocal != null) {
             throw new Exception("El usuario ya está presente");
         } else {
-            for (UsuarioRol usuarioRol : usuarioRoles) {
-                Rol rol = usuarioRol.getRol();
-                // Verifica si el rol ya existe en la base de datos
-                Rol rolExistente = rolRepository.findByNombre(rol.getNombre());
-                if (rolExistente == null) {
-                    if (rol.getNombre() == null || rol.getNombre().isEmpty()) {
-                        throw new Exception("El nombre del rol no puede ser nulo o vacío");
-                    }
-                    // Guarda el nuevo rol
-                    rol = rolRepository.save(rol);
-                } else {
-                    rol = rolExistente;
-                }
-                usuarioRol.setRol(rol);
+            employee.setPerfil("default.png");
+            employee.setNombres(capitalize(employee.getNombres()));
+            employee.setApellidos(capitalize(employee.getApellidos()));
+
+            employee.setPassword(this.bCryptPasswordEncoder.encode(employee.getPassword()));
+
+            Rol rol = rolRepository.findByNombre(nombreRol);
+            if (rol == null) {
+                rol = new Rol();
+                rol.setNombre(nombreRol);
+                rolRepository.save(rol); // Guardar el nuevo rol
             }
 
-            usuario.getUsuarioRoles().addAll(usuarioRoles);
-            usuarioLocal = usuarioRepository.save(usuario);
+            employee.setRoles(rol); // Asignar el rol al usuario
+            employeeLocal = usuarioRepository.save(employee); // Guardar el usuario
         }
 
-        return usuarioLocal;
+        return employeeLocal;
     }
 
     @Override
-    public Usuario obtenerUsuario(String username) {
+    public Employee obtenerUsuario(String username) {
         return usuarioRepository.findByUsername(username);
     }
 
@@ -61,12 +60,29 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public Set<Usuario> obtenerUsuariosExceptoAdminYCliente() {
-        return usuarioRepository.findAllExceptAdminAndClient();
+    public Set<Employee> obtenerUsuariosExceptoAdmin() {
+        return usuarioRepository.findAllExceptAdmin();
     }
 
     @Override
     public Set<Object[]> obtenerSolicitudesCitas() {
         return usuarioRepository.findAllClientAndDate();
+    }
+
+    private String capitalize(String str) {
+        if (str == null || str.isEmpty()) {
+            return str;
+        }
+        String[] words = str.split(" ");
+        StringBuilder capitalizedWords = new StringBuilder();
+        for (String word : words) {
+            if (word.length() > 1) {
+                capitalizedWords.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1).toLowerCase());
+            } else {
+                capitalizedWords.append(word.toUpperCase());
+            }
+            capitalizedWords.append(" ");
+        }
+        return capitalizedWords.toString().trim();
     }
 }

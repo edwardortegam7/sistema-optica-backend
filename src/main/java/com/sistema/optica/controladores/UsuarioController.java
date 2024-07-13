@@ -1,12 +1,10 @@
 package com.sistema.optica.controladores;
 
-import com.sistema.optica.entidades.Rol;
-import com.sistema.optica.entidades.Usuario;
-import com.sistema.optica.entidades.UsuarioRol;
+import com.sistema.optica.entidades.Employee;
 import com.sistema.optica.servicios.RolService;
 import com.sistema.optica.servicios.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -26,39 +24,18 @@ public class UsuarioController {
     @Autowired
     private RolService rolService;
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    @PostMapping("/")
-    public Usuario guardarUsuario(@RequestBody Usuario usuario) throws Exception{
-        usuario.setPerfil("default.png");
-
-        // Capitalizar nombres y apellidos
-        usuario.setNombres(capitalize(usuario.getNombres()));
-        usuario.setApellidos(capitalize(usuario.getApellidos()));
-
-        usuario.setPassword(this.bCryptPasswordEncoder.encode(usuario.getPassword()));
-
-        Set<UsuarioRol> usuarioRoles = new HashSet<>();
-
-        // Buscar o crear el rol "cliente"
-        Rol rol = rolService.obtenerRol("ADMINISTRATIVO");
-        if (rol == null) {
-            rol = new Rol();
-            rol.setNombre("ADMINISTRATIVO");
-            rol = rolService.guardarRol(rol);
+    @PostMapping("/{nombreRol}")
+    public ResponseEntity<Employee> guardarUsuario(@RequestBody Employee employee, @PathVariable String nombreRol) {
+        try {
+            Employee employeeGuardado = usuarioService.guardarUsuario(employee, nombreRol);
+            return ResponseEntity.ok(employeeGuardado);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
         }
-
-        UsuarioRol usuarioRol = new UsuarioRol();
-        usuarioRol.setUsuario(usuario);
-        usuarioRol.setRol(rol);
-        usuarioRoles.add(usuarioRol);
-
-        return usuarioService.guardarUsuario(usuario, usuarioRoles);
     }
 
     @GetMapping("/{username}")
-    public Usuario obtenerUsuario(@PathVariable("username") String username){
+    public Employee obtenerUsuario(@PathVariable("username") String username){
         return usuarioService.obtenerUsuario(username);
     }
 
@@ -68,16 +45,16 @@ public class UsuarioController {
     }
 
     @GetMapping("/get-employees")
-    public Set<Map<String, Object>> obtenerUsuariosExceptoAdminYCliente() {
-        Set<Usuario> usuarios = usuarioService.obtenerUsuariosExceptoAdminYCliente();
+    public Set<Map<String, Object>> obtenerUsuariosExceptoAdmin() {
+        Set<Employee> employees = usuarioService.obtenerUsuariosExceptoAdmin();
         Set<Map<String, Object>> empleados = new HashSet<>();
-        for (Usuario usuario : usuarios) {
+        for (Employee employee : employees) {
             Map<String, Object> empleado = new HashMap<>();
-            empleado.put("dni", usuario.getDni());
-            empleado.put("name", usuario.getNombres());
-            empleado.put("lastname", usuario.getApellidos());
-            empleado.put("phone", usuario.getTelefono());
-            empleado.put("rol", usuario.getAuthorities().stream().findFirst().get().getAuthority());
+            empleado.put("dni", employee.getDni());
+            empleado.put("name", employee.getNombres());
+            empleado.put("lastname", employee.getApellidos());
+            empleado.put("phone", employee.getTelefono());
+            empleado.put("rol", employee.getAuthorities().stream().findFirst().get().getAuthority());
             empleados.add(empleado);
         }
         return empleados;
@@ -88,20 +65,5 @@ public class UsuarioController {
         return usuarioService.obtenerSolicitudesCitas();
     }
 
-    private String capitalize(String str) {
-        if (str == null || str.isEmpty()) {
-            return str;
-        }
-        String[] words = str.split(" ");
-        StringBuilder capitalizedWords = new StringBuilder();
-        for (String word : words) {
-            if (word.length() > 1) {
-                capitalizedWords.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1).toLowerCase());
-            } else {
-                capitalizedWords.append(word.toUpperCase());
-            }
-            capitalizedWords.append(" ");
-        }
-        return capitalizedWords.toString().trim();
-    }
+
 }
