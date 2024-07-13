@@ -4,7 +4,7 @@ public class JwtResponse {
 
     private String token;
 
-    public JwtResponse(){
+    public JwtResponse() {
 
     }
 

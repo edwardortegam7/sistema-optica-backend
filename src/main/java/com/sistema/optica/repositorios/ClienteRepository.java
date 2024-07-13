@@ -4,6 +4,7 @@ import com.sistema.optica.entidades.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
-    public Cliente findByUsername(String username);
+    Cliente findByUsername(String username);
+
     boolean existsByUsername(String username);
 }
