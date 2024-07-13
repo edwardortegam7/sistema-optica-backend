@@ -65,5 +65,9 @@ public class UsuarioController {
         return usuarioService.obtenerSolicitudesCitas();
     }
 
-
+    @GetMapping("/check-email")
+    public boolean checkEmailAvailability(@RequestParam("username") String email) {
+        Employee employee = usuarioService.obtenerUsuario(email);
+        return employee == null;
+    }
 }
