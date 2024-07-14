@@ -2,7 +2,7 @@ package com.sistema.optica.controladores;
 
 import com.sistema.optica.entidades.Employee;
 import com.sistema.optica.servicios.RolService;
-import com.sistema.optica.servicios.UsuarioService;
+import com.sistema.optica.servicios.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,18 +16,18 @@ import java.util.Set;
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/usuarios")
 
-public class UsuarioController {
+public class EmpleadoController {
 
     @Autowired
-    private UsuarioService usuarioService;
+    private EmployeeService employeeService;
 
     @Autowired
     private RolService rolService;
 
     @PostMapping("/{nombreRol}")
-    public ResponseEntity<Employee> guardarUsuario(@RequestBody Employee employee, @PathVariable String nombreRol) {
+    public ResponseEntity<Employee> guardarEmpleado(@RequestBody Employee employee, @PathVariable String nombreRol) {
         try {
-            Employee employeeGuardado = usuarioService.guardarUsuario(employee, nombreRol);
+            Employee employeeGuardado = employeeService.guardarEmpleado(employee, nombreRol);
             return ResponseEntity.ok(employeeGuardado);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);
@@ -35,18 +35,18 @@ public class UsuarioController {
     }
 
     @GetMapping("/{username}")
-    public Employee obtenerUsuario(@PathVariable("username") String username) {
-        return usuarioService.obtenerUsuario(username);
+    public Employee obtenerEmpleado(@PathVariable("username") String username) {
+        return employeeService.obtenerEmpleado(username);
     }
 
-    @DeleteMapping("/{usuarioId}")
-    public void eliminarUsuario(@PathVariable("usuarioId") Long usuarioId) {
-        usuarioService.eliminarUsuario(usuarioId);
+    @DeleteMapping("/{empleadoId}")
+    public void eliminarEmpleado(@PathVariable("empleadoId") Long empleadoId) {
+        employeeService.eliminarEmpleado(empleadoId);
     }
 
     @GetMapping("/get-employees")
-    public Set<Map<String, Object>> obtenerUsuariosExceptoAdmin() {
-        Set<Employee> employees = usuarioService.obtenerUsuariosExceptoAdmin();
+    public Set<Map<String, Object>> obtenerEmpleadoExceptoAdmin() {
+        Set<Employee> employees = employeeService.obtenerEmpleadosExceptoAdmin();
         Set<Map<String, Object>> empleados = new HashSet<>();
         for (Employee employee : employees) {
             Map<String, Object> empleado = new HashMap<>();
@@ -62,12 +62,12 @@ public class UsuarioController {
 
     @GetMapping("/lista-solicitudes")
     public Set<Object[]> obtenerSolicitudes() {
-        return usuarioService.obtenerSolicitudesCitas();
+        return employeeService.obtenerSolicitudesCitas();
     }
 
     @GetMapping("/check-email")
     public boolean checkEmailAvailability(@RequestParam("username") String email) {
-        Employee employee = usuarioService.obtenerUsuario(email);
+        Employee employee = employeeService.obtenerEmpleado(email);
         return employee == null;
     }
 }

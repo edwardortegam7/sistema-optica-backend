@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Set;
 
-public interface UsuarioRepository extends JpaRepository<Employee, Long> {
+public interface EmpleadoRepository extends JpaRepository<Employee, Long> {
     Employee findByUsername(String username);
 
     @Query("SELECT cl.nombres, cl.apellidos, cl.telefono, cl.username, ci.fecha, ci.hora, ci.servicio " +

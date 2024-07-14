@@ -6,7 +6,7 @@ import com.sistema.optica.entidades.Employee;
 import com.sistema.optica.repositorios.CitasRepository;
 import com.sistema.optica.servicios.CitaService;
 import com.sistema.optica.servicios.ClienteService;
-import com.sistema.optica.servicios.UsuarioService;
+import com.sistema.optica.servicios.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,14 +23,14 @@ public class CitaServiceImpl implements CitaService {
     private ClienteService clienteService;
 
     @Autowired
-    private UsuarioService usuarioService;
+    private EmployeeService employeeService;
 
     @Override
     @Transactional
     public Cita guardarCita(Cita cita, Long clienteid) throws Exception {
         Long employeeId = 1L;
         Cliente cliente = clienteService.obtenerClienteId(clienteid);
-        Employee employee = usuarioService.obtenerEmpleadoPorId(employeeId);
+        Employee employee = employeeService.obtenerEmpleadoPorId(employeeId);
         cita.setCliente(cliente);
         cita.setEmployee(employee);
         return citasRepository.save(cita);
