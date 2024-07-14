@@ -37,7 +37,12 @@ public class CitaServiceImpl implements CitaService {
     }
 
     @Override
-    public Set<Cita> obtenerCitas(Long idCliente) {
-        return citasRepository.findAllByCliente(idCliente);
+    public Set<Object[]> obtenerSolicitudesCitas() {
+        return citasRepository.findAllClientAndDate();
+    }
+
+    @Override
+    public Cita obtenerCita(Long id) {
+        return citasRepository.findById(id).orElseThrow(() -> new RuntimeException("Cita no encontrada"));
     }
 }

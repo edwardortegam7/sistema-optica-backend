@@ -1,11 +1,20 @@
 package com.sistema.optica.controladores;
 
+import com.sistema.optica.entidades.Cita;
 import com.sistema.optica.entidades.Employee;
-import com.sistema.optica.servicios.RolService;
+import com.sistema.optica.servicios.CitaService;
 import com.sistema.optica.servicios.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -22,7 +31,7 @@ public class EmpleadoController {
     private EmployeeService employeeService;
 
     @Autowired
-    private RolService rolService;
+    private CitaService citaService;
 
     @PostMapping("/{nombreRol}")
     public ResponseEntity<Employee> guardarEmpleado(@RequestBody Employee employee, @PathVariable String nombreRol) {
@@ -62,12 +71,17 @@ public class EmpleadoController {
 
     @GetMapping("/lista-solicitudes")
     public Set<Object[]> obtenerSolicitudes() {
-        return employeeService.obtenerSolicitudesCitas();
+        return citaService.obtenerSolicitudesCitas();
     }
 
     @GetMapping("/check-email")
     public boolean checkEmailAvailability(@RequestParam("username") String email) {
         Employee employee = employeeService.obtenerEmpleado(email);
         return employee == null;
+    }
+
+    @GetMapping("/solicitud/{idSolicitud}")
+    public Cita obtenerCita(@PathVariable Long idSolicitud) {
+        return citaService.obtenerCita(idSolicitud);
     }
 }

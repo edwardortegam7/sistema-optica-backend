@@ -15,5 +15,4 @@ public interface EmployeeService {
 
     Set<Employee> obtenerEmpleadosExceptoAdmin();
 
-    Set<Object[]> obtenerSolicitudesCitas();
 }

@@ -69,11 +69,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         return empleadoRepository.findAllExceptAdmin();
     }
 
-    @Override
-    public Set<Object[]> obtenerSolicitudesCitas() {
-        return empleadoRepository.findAllClientAndDate();
-    }
-
     private String capitalize(String str) {
         if (str == null || str.isEmpty()) {
             return str;
