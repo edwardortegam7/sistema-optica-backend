@@ -9,6 +9,8 @@ public interface UsuarioService {
 
     Employee obtenerUsuario(String username);
 
+    Employee obtenerEmpleadoPorId(Long id);
+
     void eliminarUsuario(Long usuarioId);
 
     Set<Employee> obtenerUsuariosExceptoAdmin();

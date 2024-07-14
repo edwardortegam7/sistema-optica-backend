@@ -55,6 +55,11 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
+    public Employee obtenerEmpleadoPorId(Long id) {
+        return usuarioRepository.findById(id).orElseThrow( () -> new RuntimeException("Empleado no encontrado"));
+    }
+
+    @Override
     public void eliminarUsuario(Long usuarioId) {
         usuarioRepository.deleteById(usuarioId);
     }

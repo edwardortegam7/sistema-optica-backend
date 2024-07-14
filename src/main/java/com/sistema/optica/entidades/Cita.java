@@ -2,6 +2,7 @@ package com.sistema.optica.entidades;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,8 +33,21 @@ public class Cita {
 
     @ManyToOne
     @JoinColumn(name = "id_cliente", referencedColumnName = "id", nullable = false)
-    @JsonBackReference
+    @JsonIgnore
     private Cliente cliente;
+
+    @ManyToOne
+    @JoinColumn(name = "id_employee", referencedColumnName = "id", nullable = false)
+    @JsonIgnore
+    private Employee employee;
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
 
     public Cliente getCliente() {
         return cliente;
