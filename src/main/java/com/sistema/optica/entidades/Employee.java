@@ -1,6 +1,7 @@
 package com.sistema.optica.entidades;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,13 +27,25 @@ public class Employee implements UserDetails {
     private String direccion;
     @Column(name = "fecha_nacimiento", columnDefinition = "DATE")
     private Date fecha_nacimiento;
+
+    public Set<Cita> getCitas() {
+        return citas;
+    }
+
+    public void setCitas(Set<Cita> citas) {
+        this.citas = citas;
+    }
+
     private boolean enabled = true;
     private String perfil;
 
     @ManyToOne
     @JoinColumn(name = "id_rol", referencedColumnName = "id", nullable = false)
-    @JsonBackReference
+    @JsonIgnore
     Rol roles;
+
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    Set<Cita> citas = new HashSet<>();
 
     public Rol getRoles() {
         return roles;

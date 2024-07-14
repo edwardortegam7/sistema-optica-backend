@@ -35,7 +35,6 @@ public class Cliente implements UserDetails {
     private boolean enabled = true;
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
     private Set<Cita> cita = new HashSet<>();
 
     public Set<Cita> getCita() {

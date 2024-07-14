@@ -8,5 +8,7 @@ import java.util.Set;
 public interface CitaService {
     Cita guardarCita(Cita cita, Long clienteid) throws Exception;
 
-    Set<Cita> obtenerCitas(Long idCliente);
+    Set<Object[]> obtenerSolicitudesCitas();
+
+    Cita obtenerCita(Long id);
 }

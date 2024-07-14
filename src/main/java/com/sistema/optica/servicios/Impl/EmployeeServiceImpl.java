@@ -3,8 +3,8 @@ package com.sistema.optica.servicios.Impl;
 import com.sistema.optica.entidades.Employee;
 import com.sistema.optica.entidades.Rol;
 import com.sistema.optica.repositorios.RolRepository;
-import com.sistema.optica.repositorios.UsuarioRepository;
-import com.sistema.optica.servicios.UsuarioService;
+import com.sistema.optica.repositorios.EmpleadoRepository;
+import com.sistema.optica.servicios.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service;
 import java.util.Set;
 
 @Service
-public class UsuarioServiceImpl implements UsuarioService {
+public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private EmpleadoRepository empleadoRepository;
 
     @Autowired
     private RolRepository rolRepository;
@@ -24,8 +24,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public Employee guardarUsuario(Employee employee, String nombreRol) throws Exception {
-        Employee employeeLocal = usuarioRepository.findByUsername(employee.getUsername());
+    public Employee guardarEmpleado(Employee employee, String nombreRol) throws Exception {
+        Employee employeeLocal = empleadoRepository.findByUsername(employee.getUsername());
         if (employeeLocal != null) {
             throw new Exception("El usuario ya está presente");
         } else {
@@ -43,30 +43,30 @@ public class UsuarioServiceImpl implements UsuarioService {
             }
 
             employee.setRoles(rol); // Asignar el rol al usuario
-            employeeLocal = usuarioRepository.save(employee); // Guardar el usuario
+            employeeLocal = empleadoRepository.save(employee); // Guardar el usuario
         }
 
         return employeeLocal;
     }
 
     @Override
-    public Employee obtenerUsuario(String username) {
-        return usuarioRepository.findByUsername(username);
+    public Employee obtenerEmpleado(String username) {
+        return empleadoRepository.findByUsername(username);
     }
 
     @Override
-    public void eliminarUsuario(Long usuarioId) {
-        usuarioRepository.deleteById(usuarioId);
+    public Employee obtenerEmpleadoPorId(Long id) {
+        return empleadoRepository.findById(id).orElseThrow( () -> new RuntimeException("Empleado no encontrado"));
     }
 
     @Override
-    public Set<Employee> obtenerUsuariosExceptoAdmin() {
-        return usuarioRepository.findAllExceptAdmin();
+    public void eliminarEmpleado(Long usuarioId) {
+        empleadoRepository.deleteById(usuarioId);
     }
 
     @Override
-    public Set<Object[]> obtenerSolicitudesCitas() {
-        return usuarioRepository.findAllClientAndDate();
+    public Set<Employee> obtenerEmpleadosExceptoAdmin() {
+        return empleadoRepository.findAllExceptAdmin();
     }
 
     private String capitalize(String str) {

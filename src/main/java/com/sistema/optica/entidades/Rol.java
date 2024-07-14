@@ -17,7 +17,6 @@ public class Rol {
     private String nombre;
 
     @OneToMany(mappedBy = "roles", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
     private Set<Employee> employees = new HashSet<>();
 
     public Set<Employee> getUsuarios() {
