@@ -69,6 +69,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         return empleadoRepository.findAllExceptAdmin();
     }
 
+    @Override
+    public Set<Employee> obenerEmpleadosDoctor() {
+        return empleadoRepository.findAllDoctor();
+    }
+
     private String capitalize(String str) {
         if (str == null || str.isEmpty()) {
             return str;

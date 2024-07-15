@@ -11,4 +11,8 @@ public interface CitaService {
     Set<Object[]> obtenerSolicitudesCitas();
 
     Cita obtenerCita(Long id);
+
+    Cita asignarCitaDoctor(Long idEmployee, Long idCita);
+
+    Set<Object[]> obtenerCitasAsignadas();
 }
