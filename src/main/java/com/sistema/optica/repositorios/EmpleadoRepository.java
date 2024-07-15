@@ -11,4 +11,8 @@ public interface EmpleadoRepository extends JpaRepository<Employee, Long> {
 
     @Query("SELECT u FROM Employee u JOIN Rol r ON u.roles.id = r.id AND r.nombre NOT IN ('ADMINISTRADOR')")
     Set<Employee> findAllExceptAdmin();
+
+    @Query("SELECT u FROM Employee u JOIN Rol r ON u.roles.id = r.id AND r.nombre = 'Doctor'")
+    Set<Employee> findAllDoctor();
+
 }

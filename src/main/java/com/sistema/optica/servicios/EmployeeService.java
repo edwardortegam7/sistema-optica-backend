@@ -15,4 +15,6 @@ public interface EmployeeService {
 
     Set<Employee> obtenerEmpleadosExceptoAdmin();
 
+    Set<Employee> obenerEmpleadosDoctor();
+
 }

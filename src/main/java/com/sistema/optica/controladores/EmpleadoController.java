@@ -1,16 +1,20 @@
 package com.sistema.optica.controladores;
 
 import com.sistema.optica.entidades.Cita;
+import com.sistema.optica.entidades.Cliente;
 import com.sistema.optica.entidades.Employee;
 import com.sistema.optica.servicios.CitaService;
+import com.sistema.optica.servicios.ClienteService;
 import com.sistema.optica.servicios.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,6 +36,9 @@ public class EmpleadoController {
 
     @Autowired
     private CitaService citaService;
+
+    @Autowired
+    private ClienteService clienteService;
 
     @PostMapping("/{nombreRol}")
     public ResponseEntity<Employee> guardarEmpleado(@RequestBody Employee employee, @PathVariable String nombreRol) {
@@ -83,5 +90,30 @@ public class EmpleadoController {
     @GetMapping("/solicitud/{idSolicitud}")
     public Cita obtenerCita(@PathVariable Long idSolicitud) {
         return citaService.obtenerCita(idSolicitud);
+    }
+
+    @GetMapping("/get/{idCliente}")
+    public Cliente obtenerCliente(@PathVariable Long idCliente) {
+        return clienteService.obtenerClienteId(idCliente);
+    }
+
+    @GetMapping("/doctores")
+    public Set<Employee> obtenerDoctores() {
+        return employeeService.obenerEmpleadosDoctor();
+    }
+
+    @PutMapping("/asignar-cita/{idCita}")
+    public ResponseEntity<Cita> asignarCita(@RequestParam("idEmployee") Long idEmployee, @PathVariable Long idCita) {
+        try {
+            Cita asignarCita = citaService.asignarCitaDoctor(idEmployee, idCita);
+            return ResponseEntity.ok(asignarCita);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("/citas-asignadas")
+    public Set<Object[]> obtenerCitasAsignadas() {
+        return citaService.obtenerCitasAsignadas();
     }
 }

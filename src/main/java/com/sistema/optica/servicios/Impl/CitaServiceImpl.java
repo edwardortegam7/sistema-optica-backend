@@ -45,4 +45,17 @@ public class CitaServiceImpl implements CitaService {
     public Cita obtenerCita(Long id) {
         return citasRepository.findById(id).orElseThrow(() -> new RuntimeException("Cita no encontrada"));
     }
+
+    @Override
+    public Cita asignarCitaDoctor(Long idEmployee, Long idCita) {
+        Employee employee = employeeService.obtenerEmpleadoPorId(idEmployee);
+        Cita cita = obtenerCita(idCita);
+        cita.setEmployee(employee);
+        return citasRepository.save(cita);
+    }
+
+    @Override
+    public Set<Object[]> obtenerCitasAsignadas() {
+        return citasRepository.findAllDateAssigned();
+    }
 }
