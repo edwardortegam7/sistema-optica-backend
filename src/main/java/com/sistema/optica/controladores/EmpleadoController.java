@@ -113,7 +113,20 @@ public class EmpleadoController {
     }
 
     @GetMapping("/citas-asignadas")
-    public Set<Object[]> obtenerCitasAsignadas() {
-        return citaService.obtenerCitasAsignadas();
+    public Set<Map<String, Object>> obtenerCitasAsignadas() {
+        Set<Object[]> citas = citaService.obtenerCitasAsignadas();
+        Set<Map<String,Object>> citasAsignadas = new HashSet<>();
+        for (Object[] cita: citas) {
+            Map<String, Object> citaAsignada = new HashMap<>();
+            citaAsignada.put("nombres", cita[0]);
+            citaAsignada.put("apellidos", cita[1]);
+            citaAsignada.put("fecha", cita[2]);
+            citaAsignada.put("hora", cita[3]);
+            citaAsignada.put("nomDoctor", cita[4]);
+            citaAsignada.put("apeDoctor", cita[5]);
+            citasAsignadas.add(citaAsignada);
+        }
+
+        return citasAsignadas;
     }
 }
