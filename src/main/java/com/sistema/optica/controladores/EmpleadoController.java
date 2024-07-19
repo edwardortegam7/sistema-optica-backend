@@ -4,10 +4,12 @@ import com.sistema.optica.entidades.Cita;
 import com.sistema.optica.entidades.Cliente;
 import com.sistema.optica.entidades.Employee;
 import com.sistema.optica.entidades.Inventario;
+import com.sistema.optica.entidades.Venta;
 import com.sistema.optica.servicios.CitaService;
 import com.sistema.optica.servicios.ClienteService;
 import com.sistema.optica.servicios.EmployeeService;
 import com.sistema.optica.servicios.InventarioService;
+import com.sistema.optica.servicios.VentaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +47,9 @@ public class EmpleadoController {
 
     @Autowired
     private InventarioService inventarioService;
+
+    @Autowired
+    private VentaService ventaService;
 
     @PostMapping("/{nombreRol}")
     public ResponseEntity<Employee> guardarEmpleado(@RequestBody Employee employee, @PathVariable String nombreRol) {
@@ -161,5 +166,11 @@ public class EmpleadoController {
     @DeleteMapping("/inventario/{id}")
     public void eliminarProducto(@PathVariable Integer id){
         inventarioService.eliminarProducto(id);
+    }
+
+    //Venta
+    @GetMapping("/ventas")
+    public List<Venta> obtenerVentas(){
+        return ventaService.obtenerVentas();
     }
 }
