@@ -3,9 +3,11 @@ package com.sistema.optica.controladores;
 import com.sistema.optica.entidades.Cita;
 import com.sistema.optica.entidades.Cliente;
 import com.sistema.optica.entidades.Employee;
+import com.sistema.optica.entidades.Inventario;
 import com.sistema.optica.servicios.CitaService;
 import com.sistema.optica.servicios.ClienteService;
 import com.sistema.optica.servicios.EmployeeService;
+import com.sistema.optica.servicios.InventarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -39,6 +42,9 @@ public class EmpleadoController {
 
     @Autowired
     private ClienteService clienteService;
+
+    @Autowired
+    private InventarioService inventarioService;
 
     @PostMapping("/{nombreRol}")
     public ResponseEntity<Employee> guardarEmpleado(@RequestBody Employee employee, @PathVariable String nombreRol) {
@@ -128,5 +134,32 @@ public class EmpleadoController {
         }
 
         return citasAsignadas;
+    }
+
+    //Inventario
+    @GetMapping("/inventario")
+    public List<Inventario> obtenerInventario(){
+        return inventarioService.obtenerInventario();
+    }
+
+    @GetMapping("/inventario/{id}")
+    public Inventario encontrarProductoPorId(@PathVariable Integer id){
+        return inventarioService.encontrarProductoPorId(id);
+    }
+
+    @PostMapping("/inventario")
+    public Inventario agregarProducto(@RequestBody Inventario inventario){
+        return inventarioService.agregarProducto(inventario);
+    }
+
+
+    @PutMapping("/inventario/{id}")
+    public Inventario modificarProducto(@PathVariable Integer id,@RequestBody Inventario detallesInventario){
+        return inventarioService.modificarProducto(id,detallesInventario);
+    }
+
+    @DeleteMapping("/inventario/{id}")
+    public void eliminarProducto(@PathVariable Integer id){
+        inventarioService.eliminarProducto(id);
     }
 }
