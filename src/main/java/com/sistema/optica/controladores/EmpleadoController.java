@@ -173,4 +173,9 @@ public class EmpleadoController {
     public List<Venta> obtenerVentas(){
         return ventaService.obtenerVentas();
     }
+
+    @PostMapping("/ventas")
+    public Venta agregarVenta(@RequestBody Venta venta){
+        return ventaService.agregarVenta(venta);
+    }
 }

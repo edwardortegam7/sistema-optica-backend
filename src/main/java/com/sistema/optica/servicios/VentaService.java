@@ -9,5 +9,5 @@ import java.util.List;
 public interface VentaService {
     List<Venta> obtenerVentas();
 
-
+    Venta agregarVenta(Venta venta);
 }
