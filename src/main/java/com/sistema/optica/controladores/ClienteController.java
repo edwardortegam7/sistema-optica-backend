@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/clientes")
@@ -65,5 +67,10 @@ public class ClienteController {
     public boolean esCliente(@PathVariable String username) {
         Cliente cliente = clienteService.obtenerCliente(username);
         return cliente != null;
+    }
+
+    @GetMapping("/")
+    public List<Cliente> obtenerClientes(){
+        return clienteService.obtenerClientes();
     }
 }

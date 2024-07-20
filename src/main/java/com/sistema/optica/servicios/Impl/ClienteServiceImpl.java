@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class ClienteServiceImpl implements ClienteService {
 
@@ -33,5 +35,10 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public Cliente obtenerClienteId(Long id) {
         return clienteRepository.findById(id).orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
+    }
+
+    @Override
+    public List<Cliente> obtenerClientes() {
+        return clienteRepository.findAll();
     }
 }
