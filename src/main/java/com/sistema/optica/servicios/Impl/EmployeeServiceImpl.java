@@ -2,6 +2,7 @@ package com.sistema.optica.servicios.Impl;
 
 import com.sistema.optica.entidades.Employee;
 import com.sistema.optica.entidades.Rol;
+import com.sistema.optica.excepciones.EmpleadoNotFoundException;
 import com.sistema.optica.repositorios.RolRepository;
 import com.sistema.optica.repositorios.EmpleadoRepository;
 import com.sistema.optica.servicios.EmployeeService;
@@ -60,8 +61,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void eliminarEmpleado(Long usuarioId) {
-        empleadoRepository.deleteById(usuarioId);
+    public void eliminarEmpleado(Long id) throws EmpleadoNotFoundException {
+
+        //empleadoRepository.deleteById(usuarioId);
+        Employee employee = empleadoRepository.findById(id)
+                .orElseThrow(() -> new EmpleadoNotFoundException());
+        empleadoRepository.delete(employee);
     }
 
     @Override
@@ -69,6 +74,24 @@ public class EmployeeServiceImpl implements EmployeeService {
         return empleadoRepository.findAllExceptAdmin();
     }
 
+    @Override
+    public Employee updateEmployee(Long id, Employee employeeDetails) throws EmpleadoNotFoundException {
+        System.out.println(" back Employee details received: " + employeeDetails);
+        System.out.println(employeeDetails.getApellidos());
+        System.out.println(employeeDetails.getDni());
+        System.out.println(employeeDetails.getNombres());
+        System.out.println(employeeDetails.getId());
+        Employee employee = empleadoRepository.findById(id)
+                .orElseThrow(() -> new EmpleadoNotFoundException());
+        employee.setNombres(employeeDetails.getNombres());
+        employee.setApellidos(employeeDetails.getApellidos());
+        employee.setDireccion(employeeDetails.getDireccion());
+        employee.setTelefono(employeeDetails.getTelefono());
+        employee.setDni(employeeDetails.getDni());
+        employee.setGenero(employeeDetails.getGenero());
+        // Agrega aquí cualquier otro campo que necesites actualizar
+        return empleadoRepository.save(employee);
+    }
     @Override
     public Set<Employee> obenerEmpleadosDoctor() {
         return empleadoRepository.findAllDoctor();
@@ -90,4 +113,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
         return capitalizedWords.toString().trim();
     }
+
+
 }

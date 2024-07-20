@@ -3,12 +3,11 @@ package com.sistema.optica.config;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 @Component
@@ -39,6 +38,15 @@ public class JwtUtils {
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
+        // Aquí añades los roles o authorities del usuario al token
+        Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
+        List<String> roles = new ArrayList<>();
+
+        for (GrantedAuthority authority : authorities) {
+            roles.add(authority.getAuthority());
+        }
+
+        claims.put("roles", roles);
         return createToken(claims, userDetails.getUsername());
     }
 
