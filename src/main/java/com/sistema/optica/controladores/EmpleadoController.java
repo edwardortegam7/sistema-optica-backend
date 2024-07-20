@@ -3,12 +3,14 @@ package com.sistema.optica.controladores;
 import com.sistema.optica.entidades.Cita;
 import com.sistema.optica.entidades.Cliente;
 import com.sistema.optica.entidades.Employee;
+import com.sistema.optica.excepciones.EmpleadoNotFoundException;
 import com.sistema.optica.servicios.CitaService;
 import com.sistema.optica.servicios.ClienteService;
 import com.sistema.optica.servicios.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,8 +57,8 @@ public class EmpleadoController {
         return employeeService.obtenerEmpleado(username);
     }
 
-    @DeleteMapping("/{empleadoId}")
-    public void eliminarEmpleado(@PathVariable("empleadoId") Long empleadoId) {
+    @DeleteMapping("delete/{empleadoId}")
+    public void eliminarEmpleado(@PathVariable("empleadoId") Long empleadoId) throws EmpleadoNotFoundException {
         employeeService.eliminarEmpleado(empleadoId);
     }
 
@@ -66,10 +68,11 @@ public class EmpleadoController {
         Set<Map<String, Object>> empleados = new HashSet<>();
         for (Employee employee : employees) {
             Map<String, Object> empleado = new HashMap<>();
+            empleado.put("id", employee.getId());
             empleado.put("dni", employee.getDni());
-            empleado.put("name", employee.getNombres());
-            empleado.put("lastname", employee.getApellidos());
-            empleado.put("phone", employee.getTelefono());
+            empleado.put("nombres", employee.getNombres());
+            empleado.put("apellidos", employee.getApellidos());
+            empleado.put("telefono", employee.getTelefono());
             empleado.put("rol", employee.getAuthorities().stream().findFirst().get().getAuthority());
             empleados.add(empleado);
         }
@@ -118,6 +121,7 @@ public class EmpleadoController {
         Set<Map<String,Object>> citasAsignadas = new HashSet<>();
         for (Object[] cita: citas) {
             Map<String, Object> citaAsignada = new HashMap<>();
+
             citaAsignada.put("nombres", cita[0]);
             citaAsignada.put("apellidos", cita[1]);
             citaAsignada.put("fecha", cita[2]);
@@ -128,5 +132,16 @@ public class EmpleadoController {
         }
 
         return citasAsignadas;
+    }
+
+    @PutMapping("/update/{id}")
+    //@PreAuthorize("hasRole('ADMINISTRADOR')")
+    public ResponseEntity<Employee> updateEmployee(@PathVariable Long id, @RequestBody Employee employeeDetails) {
+        try {
+            Employee updatedEmployee = employeeService.updateEmployee(id, employeeDetails);
+            return ResponseEntity.ok(updatedEmployee);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 }
